@@ -1,0 +1,12 @@
+<%= render 'shared/error', obj: @errors %>
+<%= form_with(url: biller_search_brands_path, method: "post", class: "shadow mb-3 bg-secondary rounded", local: true)  do |f| %>
+  <div class="form-group row mt-2">
+    <%= f.label :brand_name, "Brand Name", class: "col-2 col-form-label ml-4 mt-4 text-black" %>
+    <div class="col-9">
+      <%= f.text_field :brand_name, class: "form-control mt-4 shadow rounded", placeholder: 'Search the Brand' %>
+    </div>
+  </div>
+  <div class="form-group justify-content-center row">
+    <%= f.submit 'Search', class: "btn btn-outline-light btn-lg mb-3" %>
+  </div>
+<% end %>

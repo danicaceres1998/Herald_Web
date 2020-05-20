@@ -1,0 +1,62 @@
+@import 'bootstrap/dist/css/bootstrap';
+
+/* HOME PAGE CONFIGURATION */
+.navbar {
+  background-color: #222831 !important;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.text {
+  color: #142850;
+  font-size: 35px;
+}
+
+.text-white {
+  font-size: 50px;
+  color: white !important;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-family: 'Lato', sans-serif;
+  color:grey;
+  font-size: 100px;
+}
+
+.jumbotron {
+  background-image: asset_url('home.jpg');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 500px;
+}
+
+h1 {
+  color: black;
+}
+
+#logo {
+  color: white !important;
+  float: left;
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  font-weight: bold;
+  // text-transform: uppercase;
+}
+
+#home-container {
+  margin-top: 25px;
+}
+
+/* Sticky Footer Classes */
+html, body {
+  height: 100%;
+}
+
+#page-content {
+  flex: 1 0 auto;
+  background-color: #30475e;
+}
