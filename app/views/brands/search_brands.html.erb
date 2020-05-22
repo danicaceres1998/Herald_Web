@@ -1,7 +1,7 @@
 <h1 class="text-center mt-3 text-white">Search the Biller</h1>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-11">
+    <div class="col-9">
       <%= render 'shared/error', obj: @errors %>
       <%= form_with(url: biller_search_brands_path, method: "post", class: "shadow mb-3 bg-secondary rounded", local: true)  do |f| %>
         <div class="form-group row mt-2">
@@ -13,13 +13,32 @@
         <div class="form-group justify-content-center row">
           <%= f.submit 'Search', class: "btn btn-outline-light btn-lg mb-2" %>
         </div>
-        <h4 class="alert-heading ml-3">Result of the Search:</h4>
-        <ul>
-          <% @brands["brands"].each do |brand| %>
-            <li><%= brand %></li>
-          <% end %>
-        </ul>
-        <hr>
+      <% end %>
+      <%= form_tag biller_create_brand_path, class: "shadow mb-3 bg-secondary rounded justify-content-center" do %>
+        <h4 class="alert-heading ml-3 mb-3">Results of the Search:</h4>
+        <div class="form-group justify-content-center row">
+          <table class="table col-11 text-center table-striped bg-white">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @list_brands.each do |br| %>
+                <tr>
+                  <th scope="row"><%= br.hash_brand['id'] %></th>
+                  <td><%= br.hash_brand['name'] %></td>
+                  <td><%= check_box_tag "list_brands[]", br.hash_brand %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group justify-content-center row">
+          <%= submit_tag 'Continue', class: "btn btn-outline-success btn-lg mb-4"%>
+        </div>
       <% end %>
       <%= link_to 'Return Back', edit_biller_path(@biller), class: "btn btn-info mb-3" %>
     </div>

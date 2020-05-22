@@ -2,18 +2,39 @@ class BrandsController < ApplicationController
   def new
     @errors = []
     @biller = Biller.find(params[:biller_id])
-    @brands = nil
+    @brands = @biller.brands
   end
 
   def create
     @errors = []
+    @biller = Biller.find(params[:biller_id])
+    json_list = get_selected_brands
+    if !json_list.is_a? Array
+      @errors.push('The list of Selected Brands is empty')
+      render 'new'
+    else
+      @list_brands = []
+      json_list.each { |br| @list_brands.push(JSON.parse(br.gsub('=>', ':'))) }
+      @brands = []
+      @products = []
+      @list_brands.each do |br|
+        @brands.push(Brand.new(brand_code: br['id'], brand_name: br['name'], biller_id: params[:biller_id]))
+      end
+      @brands.each { |brand| brand.valid? ? brand.save : brand.errors.full_messages.each { |e| @errors.push(e) }}
+      @list_brands.length.times do |i|
+        @list_brands[i]['products'].each do |prd|
+          @products.push(Product.new(product_id: prd['id'], product_name: prd['name'], brand_id: @brands[i].id))
+        end
+      end
+      @products.each { |prd| prd.valid? ? prd.save : prd.errors.full_messages.each { |e| @errors.push(e) }}
+    end
   end
 
   def search_brands
     require 'net/http'
     require 'uri'
     require 'openssl'
-    require 'json'
+    Struct.new('BrandStruct', :hash_brand, :selected_opt)
       #OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
       #response = nil
       #uri = URI('https://10.10.17.104:4481/billing/api/0.2/brands')
@@ -25,7 +46,10 @@ class BrandsController < ApplicationController
       #showing_billers(JSON.parse(response.body))
     @errors = []
     @biller = Biller.find(params[:biller_id])
-    @brands = {"status"=>"success", "brands"=>[{"id"=>1, "name"=>"ANDE", "url_name"=>"ande", \
+    @brand = Brand.new
+    @list_brands = []
+    brand_name = get_name_brand
+    response = {"status"=>"success", "brands"=>[{"id"=>1, "name"=>"ANDE", "url_name"=>"ande", \
             "logo_resource_id"=>"09e0442830be471db2ff9d7976c5f757.png", \
             "full_logo_url"=>"https://www.bancard.com.py/s4/public/billing_brands_logos/09e0442830be471db2ff9d7976c5f757.png.normal.png", \
             "products"=>[{"id"=>1, "name"=>"Pago de Factura", "description"=>"Pago de Factura", "group_id"=>1, \
@@ -39,6 +63,17 @@ class BrandsController < ApplicationController
             {"id"=>3, "name"=>"Essap", "url_name"=>"essap", "logo_resource_id"=>"7c2a3d7b-d849-4c38-a44b-d0f597739a62",\
             "full_logo_url"=>"https://www.bancard.com.py/s4/public/billing_brands_logos/7c2a3d7b-d849-4c38-a44b-d0f597739a62.normal.png", \
             "products"=>[{"id"=>4, "name"=>"Pago de Factura", "description"=>"Pago de Factura", "group_id"=>1, "queries_debt?"=>true}]}]}
+      #brands = response['brands'].select { |br| br['name'].downcase.include? brand_name[:brand_name] }
+    response['brands'].each { |brand| @list_brands.push(Struct::BrandStruct.new(brand, false)) }
+  end
+
+  def research_brand
+    @errors = []
+    @biller = Biller.find(params[:biller_id])
+    @brands = @biller.brands
+    @brands.each { |br| br.products.each(&:destroy) }
+    @brands.each(&:destroy)
+    redirect_to new_biller_brand_path
   end
 
   private
@@ -46,4 +81,9 @@ class BrandsController < ApplicationController
   def get_name_brand
     params.permit(:brand_name)
   end
+
+  def get_selected_brands
+    params[:list_brands]
+  end
+
 end
