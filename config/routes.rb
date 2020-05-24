@@ -1,11 +1,18 @@
 Rails.application.routes.draw do
-  root 'pages#home'
+  root 'herald#home'
   resources :billers do
+    # Functions for Herald
+    get 'report_problem', to: 'herald#report_problem'
+    # Functions for Brand
     post 'search_brands', to: 'brands#search_brands'
     get 'search_brands', to: 'brands#search_brands'
     post 'create_brand', to: 'brands#create'
     get 'create_brand', to: 'brands#create'
     get 'research_brand', to: 'brands#research_brand'
+    post 'filter_products', to: 'brands#filter_products'
+    get 'filter_products', to: 'brands#filter_products'
+    post 'reselect_brand', to: 'brands#recreate_brand'
+    get 'reselect_brand', to: 'brands#recreate_brand'
     resources :brands, except: [:create] do
       resources :products
     end

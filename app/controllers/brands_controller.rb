@@ -30,6 +30,12 @@ class BrandsController < ApplicationController
     end
   end
 
+  def recreate_brand
+    @errors = []
+    @biller = Biller.find(params[:biller_id])
+    @brands = @biller.brands
+  end
+
   def search_brands
     require 'net/http'
     require 'uri'
@@ -76,6 +82,27 @@ class BrandsController < ApplicationController
     redirect_to new_biller_brand_path
   end
 
+  def filter_products
+    @errors = []
+    @biller = Biller.find(params[:biller_id])
+    @brands = @biller.brands
+    60.times { print '-' }; puts
+    selected_products = get_selected_prd
+    prd_ids = []
+    60.times { print '-' }; puts
+    if !selected_products.is_a? Array
+      @errors.push('The list of Selected Products is empty')
+      render 'create'
+    else
+      selected_products.each { |id| prd_ids.push(id.to_i) }
+      @brands.each do |brand|
+        brand.products do |prd|
+          prd.destroy unless prd_ids.include? prd.product_id
+        end
+      end
+    end
+  end
+
   private
 
   def get_name_brand
@@ -84,6 +111,10 @@ class BrandsController < ApplicationController
 
   def get_selected_brands
     params[:list_brands]
+  end
+
+  def get_selected_prd
+    params[:list_prd]
   end
 
 end

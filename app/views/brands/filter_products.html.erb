@@ -1,9 +1,12 @@
-<h1 class="text-center mt-3 text-white">Select the Products</h1>
+<h1 class="text-center mt-3 text-white">Final Step</h1>
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-9">
       <%= render 'shared/error', obj: @errors %>
-      <%= form_tag biller_filter_products_path, method: 'post', class: "shadow mb-3 bg-secondary rounded justify-content-center" do %>
+      <%= form_with(url: biller_report_problem_path, method: "get", class: "shadow mb-3 bg-secondary rounded", local: true) do |f| %>
+        <div class="form-group justify-content-center row">
+          <h4 class="alert-heading">Summary</h4>
+        </div>
         <% @brands.each do |br| %>
           <h4 class="alert-heading ml-3 mb-3"><li><%= br.brand_name %>:</li></h4>
           <div class="form-group justify-content-center row">
@@ -12,7 +15,6 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Select</th>
               </tr>
               </thead>
               <tbody>
@@ -20,7 +22,6 @@
                 <tr>
                   <th scope="row"><%= prd.product_id %></th>
                   <td><%= prd.product_name %></td>
-                  <td><%= check_box_tag "list_prd[]", prd.product_id %></td>
                 </tr>
               <% end %>
               </tbody>
@@ -28,10 +29,10 @@
           </div>
         <% end %>
         <div class="form-group justify-content-center row">
-          <%= submit_tag 'Continue', class: "btn btn-outline-success btn-lg mb-4"%>
+          <%= f.submit 'Finish', class: "btn btn-outline-success btn-lg mb-4"%>
         </div>
       <% end %>
-      <%= link_to 'Return Back', biller_research_brand_path, class: "btn btn-info mb-3" %>
+      <%= link_to 'Return Back', biller_reselect_brand_path, class: "btn btn-info mb-3" %>
     </div>
   </div>
 </div>
