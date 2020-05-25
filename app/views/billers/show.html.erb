@@ -1,0 +1,48 @@
+<h2 class="text-center mt-4">Tracked Biller</h2>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-8 mt-4">
+      <div class="card text-center shadow mb-3 bg-white rounded">
+        <div class="card-header font-italic">
+          by <%= @biller.from %>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title text-left">Sended To:</h2>
+          <div class="card-text text-left mb-3"><%= @biller.contacts %></div>
+          <h2 class="card-title text-left">Error:</h2>
+          <div class="card-text text-left mb-3"><%= @biller.error %></div>
+          <h2 class="card-title">Brands</h2>
+          <% @biller.brands.each do |brand| %>
+            <h4 class="alert-heading ml-3 mb-3 text-left"><li><%= brand.brand_name %>:</li></h4>
+            <div class="form-group justify-content-center row">
+              <table class="table col-11 text-center table-striped bg-white">
+                <thead class="thead-dark">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% brand.products.each do |prd| %>
+                  <tr>
+                    <th scope="row"><%= prd.product_id %></th>
+                    <td><%= prd.product_name %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+          <%= link_to 'Untrack', '#', class: "btn btn-outline-primary", data: {confirm: 'Are you sure?'} %>
+          <%= link_to 'Delete', biller_path(@biller), class: "btn btn-outline-danger", method: :delete, data: {confirm: 'Are you sure?'} %>
+        </div>
+        <div class="card-footer text-muted">
+          <small>
+            Reported <%= time_ago_in_words(@biller.created_at) %> ago
+          </small>
+        </div>
+      </div>
+      <%= link_to 'Return Back', tracked_billers_path, class: "btn btn-info mb-3" %>
+    </div>
+  </div>
+</div>

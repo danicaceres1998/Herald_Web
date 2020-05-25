@@ -5,7 +5,7 @@
       <%= render 'shared/error', obj: @errors %>
       <%= form_with(url: biller_report_problem_path, method: "get", class: "shadow mb-3 bg-secondary rounded", local: true) do |f| %>
         <div class="form-group justify-content-center row">
-          <h4 class="alert-heading">Summary</h4>
+          <h2 class="alert-heading">Summary</h2>
         </div>
         <% @brands.each do |br| %>
           <h4 class="alert-heading ml-3 mb-3"><li><%= br.brand_name %>:</li></h4>

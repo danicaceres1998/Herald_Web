@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   root 'herald#home'
+  get 'tracked_billers', to: 'herald#show_tracked_billers'
   resources :billers do
     # Functions for Herald
     get 'report_problem', to: 'herald#report_problem'
+    get 'untrack_biller', to: 'herald#untrack_biller'
     # Functions for Brand
     post 'search_brands', to: 'brands#search_brands'
     get 'search_brands', to: 'brands#search_brands'

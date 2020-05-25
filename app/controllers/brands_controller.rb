@@ -88,19 +88,21 @@ class BrandsController < ApplicationController
     @brands = @biller.brands
     60.times { print '-' }; puts
     selected_products = get_selected_prd
-    prd_ids = []
-    60.times { print '-' }; puts
-    if !selected_products.is_a? Array
-      @errors.push('The list of Selected Products is empty')
-      render 'create'
-    else
-      selected_products.each { |id| prd_ids.push(id.to_i) }
+    puts selected_products
+    if selected_products.is_a? Array
       @brands.each do |brand|
-        brand.products do |prd|
-          prd.destroy unless prd_ids.include? prd.product_id
+        brand.products.each do |prd|
+          unless selected_products.include? prd.product_id.to_s
+            prd.destroy
+            brand.products.delete(prd)
+          end
         end
       end
+    else
+      @errors.push('The list of Selected Products is empty')
+      render 'create'
     end
+
   end
 
   private

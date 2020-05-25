@@ -1,6 +1,8 @@
 class BillersController < ApplicationController
   before_action :find_biller, only: %i[show edit update destroy]
 
+  def show; end
+
   def new
     @errors = []
     @biller = Biller.new
@@ -42,6 +44,12 @@ class BillersController < ApplicationController
   end
 
   def destroy
+    unless @biller.brands.empty?
+      @biller.brands.each do |brand|
+        brand.products.each(&:destroy) unless brand.products.empty?
+      end
+      @biller.brands.each(&:destroy)
+    end
     @biller.destroy
     redirect_to root_path
   end

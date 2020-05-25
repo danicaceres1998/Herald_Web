@@ -6,15 +6,36 @@ class HeraldController < ApplicationController
     # Disabling the service
     @biller.brands.each do |brand|
       brand.products.each do |prd|
-        disable_service(prd.product_id, brand.brand_name, prd.product_name)
+        #disable_service(prd.product_id, brand.brand_name, prd.product_name)
       end
     end
     # Sending the email to the biller
-    @email_sender.send_email_biller(@user_email, @biller[0]['name_brand'], @biller_contacts.split('; '), error.join("\n"), false)
+    #EmailSender.send_email_biller(@biller.from, @biller[0]['name_brand'], @biller.contacts, @biller.error, false)
     # Sending the email to the entities
     products = []
-    @biller.each {|row| products.push({id: row[2], name_prd: row[3]})}
-    @email_sender.send_email_entities(@user_email, @biller[0]['name_brand'], products, error.join("\n"), false)
+    @biller.brands.each do |brand|
+      # Getting the products
+      brand.products.each { |prd| products.push({ id: prd.product_id, name_prd: prd.product_name }) }
+    end
+    #EmailSender.send_email_entities(@biller.from, @biller[0]['name_brand'], products, @biller.error, false)
+    redirect_to tracked_billers_path
+  end
+
+  def show_tracked_billers
+    @billers = Biller.all
+  end
+
+  def untrack_biller
+    @biller = Biller.find(params[:id])
+    @biller.brands.each do |brand|
+      brand.products.each do |prd|
+        # enable_service(prd.product_id)
+      end
+    end
+    # Sending the emails
+    # EmailSender.send_email_biller(@biller.from, @biller.brand_name, @biller.contacts, nil, true)
+    # EmailSender.send_email_entities(@biller.from, @biller.brand_name, nil, nil, true)
+    redirect_to biller_path(@biller), method: :delete
   end
 
   private

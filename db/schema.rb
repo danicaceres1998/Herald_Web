@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_234127) do
+ActiveRecord::Schema.define(version: 2020_05_25_063714) do
 
   create_table "billers", force: :cascade do |t|
     t.string "contacts"
     t.string "from"
     t.text "error"
+    t.datetime "created_at"
   end
 
   create_table "brands", force: :cascade do |t|
