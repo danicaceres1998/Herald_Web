@@ -41,15 +41,14 @@ class BrandsController < ApplicationController
     require 'uri'
     require 'openssl'
     Struct.new('BrandStruct', :hash_brand, :selected_opt)
-      #OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-      #response = nil
+    response = nil
       #uri = URI('https://10.10.17.104:4481/billing/api/0.2/brands')
     #Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       #req = Net::HTTP::Get.new(uri)
         #req.basic_auth 'apps/i9Pc7v5W8m4jVaPc51a14RiA5K8TLGmy', '59fRSmdYHljB.Yew6wCGdRTADF6eSCwc05gXnCfs'
         #response = http.request(req) # Net::HTTPResponse object
       #end
-      #showing_billers(JSON.parse(response.body))
+      # response = JSON.parse(response.body)
     @errors = []
     @biller = Biller.find(params[:biller_id])
     @brand = Brand.new

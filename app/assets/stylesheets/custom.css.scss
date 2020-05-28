@@ -26,6 +26,16 @@
   font-size: 100px;
 }
 
+.img-fluid {
+  background-image: asset_url('empty_list.jpg');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 350px;
+  width: 350px;
+}
+
+
 .jumbotron {
   background-image: asset_url('home.jpg');
   background-position: center center;
@@ -35,6 +45,10 @@
 }
 
 h1 {
+  color: black;
+}
+
+h2 {
   color: black;
 }
 

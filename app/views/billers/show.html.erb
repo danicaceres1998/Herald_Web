@@ -1,17 +1,17 @@
-<h2 class="text-center mt-4">Tracked Biller</h2>
+<h1 class="text-center text-white mt-4">Summary</h1>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-8 mt-4">
+    <div class="col-8 mt-3">
       <div class="card text-center shadow mb-3 bg-white rounded">
         <div class="card-header font-italic">
           by <%= @biller.from %>
         </div>
         <div class="card-body">
-          <h2 class="card-title text-left">Sended To:</h2>
+          <h2 class="card-title text-left font-italic">Sended To:</h2>
           <div class="card-text text-left mb-3"><%= @biller.contacts %></div>
-          <h2 class="card-title text-left">Error:</h2>
+          <h2 class="card-title text-left font-italic">Error:</h2>
           <div class="card-text text-left mb-3"><%= @biller.error %></div>
-          <h2 class="card-title">Brands</h2>
+          <h2 class="card-title font-italic">Brands</h2>
           <% @biller.brands.each do |brand| %>
             <h4 class="alert-heading ml-3 mb-3 text-left"><li><%= brand.brand_name %>:</li></h4>
             <div class="form-group justify-content-center row">
@@ -33,8 +33,8 @@
               </table>
             </div>
           <% end %>
-          <%= link_to 'Untrack', '#', class: "btn btn-outline-primary", data: {confirm: 'Are you sure?'} %>
-          <%= link_to 'Delete', biller_path(@biller), class: "btn btn-outline-danger", method: :delete, data: {confirm: 'Are you sure?'} %>
+          <%= link_to 'Untrack', '#', class: "btn btn-outline-primary btn-lg", data: {confirm: 'Are you sure you want to Untrack this biller?'} %>
+          <%= link_to 'Delete', biller_path(@biller), class: "btn btn-outline-danger btn-lg", method: :delete, data: {confirm: 'Are you sure you want to Delete this biller?'} %>
         </div>
         <div class="card-footer text-muted">
           <small>

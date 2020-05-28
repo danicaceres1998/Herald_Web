@@ -44,14 +44,17 @@ class BillersController < ApplicationController
   end
 
   def destroy
+    path = root_path
     unless @biller.brands.empty?
       @biller.brands.each do |brand|
         brand.products.each(&:destroy) unless brand.products.empty?
       end
       @biller.brands.each(&:destroy)
+      flash[:notice] = 'Biller has been untracked successfully.'
+      path = untrack_billers_path
     end
     @biller.destroy
-    redirect_to root_path
+    redirect_to path
   end
 
   private

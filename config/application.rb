@@ -6,6 +6,9 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Defusing the SSL Certificate
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
+
 module HeraldWeb
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
