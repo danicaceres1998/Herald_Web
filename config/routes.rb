@@ -20,5 +20,7 @@ Rails.application.routes.draw do
       resources :products
     end
   end
-  resources :emails
+  get 'update_messages', to: 'emails#update_messages'
+  get 'update_contacts', to: 'emails#update_contacts'
+  resources :emails, only: %i[update]
 end

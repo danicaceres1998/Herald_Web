@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <%= render 'shared/error', obj: @errors %>
+      <% @emails.each do |email| %>
+        <%= form_with(model: email, class: "shadow mb-3 mt-2 bg-secondary rounded", local: true)  do |f| %>
+          <% if @update_condition %>
+            <% if email.id == 1 %>
+              <br><h2 class="text-center">Entities Email</h2>
+            <% elsif email.id == 2%>
+              <br><h2 class="text-center">Bancard/Biller Email</h2>
+            <% else %>
+              <br><h2 class="text-center">Active Email</h2>
+            <% end %>
+            <div class="form-group row mt-4">
+              <%= f.label :message, class: "col-2 col-form-label ml-4 text-black font-weight-bold" %>
+              <div class="col-9">
+                <%= f.text_area :message, rows: 20, class: "form-control shadow rounded", placeholder: "Put the Error here"%>
+              </div>
+            </div>
+            <div class="form-group justify-content-center row">
+              <%= f.submit 'Update', class: "btn btn-outline-light btn-lg mb-3"%>
+            </div>
+          <% else %>
+            <% if email.id != 3 %>
+              <% if email.id == 1 %>
+                <br><h2 class="text-center">Entities Email</h2>
+              <% elsif email.id == 2%>
+                <br><h2 class="text-center">Bancard/Biller Email</h2>
+              <% else %>
+                <br><h2 class="text-center">Active Email</h2>
+              <% end %>
+              <div class="form-group row mt-4">
+                <%= f.label :contacts, class: "col-2 col-form-label ml-4 text-black font-weight-bold" %>
+                <div class="col-8">
+                  <%= f.text_area :contacts, rows: 15, class: "form-control shadow rounded", placeholder: "Put the Error here"%>
+                </div>
+              </div>
+              <div class="form-group justify-content-center row">
+                <%= f.submit 'Update', class: "btn btn-outline-light btn-lg mb-3"%>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= link_to 'Return Back', root_path, class: "btn btn-info mb-3" %>
+    </div>
+  </div>
+</div>

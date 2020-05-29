@@ -85,9 +85,7 @@ class BrandsController < ApplicationController
     @errors = []
     @biller = Biller.find(params[:biller_id])
     @brands = @biller.brands
-    60.times { print '-' }; puts
     selected_products = get_selected_prd
-    puts selected_products
     if selected_products.is_a? Array
       @brands.each do |brand|
         brand.products.each do |prd|

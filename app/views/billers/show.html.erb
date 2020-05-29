@@ -33,7 +33,7 @@
               </table>
             </div>
           <% end %>
-          <%= link_to 'Untrack', '#', class: "btn btn-outline-primary btn-lg", data: {confirm: 'Are you sure you want to Untrack this biller?'} %>
+          <%= link_to 'Untrack', untrack_billers_path, class: "btn btn-outline-primary btn-lg", data: {confirm: 'Are you sure you want to Untrack this biller?'} %>
           <%= link_to 'Delete', biller_path(@biller), class: "btn btn-outline-danger btn-lg", method: :delete, data: {confirm: 'Are you sure you want to Delete this biller?'} %>
         </div>
         <div class="card-footer text-muted">
