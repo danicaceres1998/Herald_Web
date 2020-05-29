@@ -42,34 +42,20 @@ class BrandsController < ApplicationController
     require 'openssl'
     Struct.new('BrandStruct', :hash_brand, :selected_opt)
     response = nil
-      #uri = URI('https://10.10.17.104:4481/billing/api/0.2/brands')
-    #Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
-      #req = Net::HTTP::Get.new(uri)
-        #req.basic_auth 'apps/i9Pc7v5W8m4jVaPc51a14RiA5K8TLGmy', '59fRSmdYHljB.Yew6wCGdRTADF6eSCwc05gXnCfs'
-        #response = http.request(req) # Net::HTTPResponse object
-      #end
-      # response = JSON.parse(response.body)
+    uri = URI('https://10.10.17.104:4481/billing/api/0.2/brands')
+    Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+      req = Net::HTTP::Get.new(uri)
+      req.basic_auth 'apps/i9Pc7v5W8m4jVaPc51a14RiA5K8TLGmy', '59fRSmdYHljB.Yew6wCGdRTADF6eSCwc05gXnCfs'
+      response = http.request(req) # Net::HTTPResponse object
+    end
+    response = JSON.parse(response.body)
     @errors = []
     @biller = Biller.find(params[:biller_id])
     @brand = Brand.new
     @list_brands = []
     brand_name = get_name_brand
-    response = {"status"=>"success", "brands"=>[{"id"=>1, "name"=>"ANDE", "url_name"=>"ande", \
-            "logo_resource_id"=>"09e0442830be471db2ff9d7976c5f757.png", \
-            "full_logo_url"=>"https://www.bancard.com.py/s4/public/billing_brands_logos/09e0442830be471db2ff9d7976c5f757.png.normal.png", \
-            "products"=>[{"id"=>1, "name"=>"Pago de Factura", "description"=>"Pago de Factura", "group_id"=>1, \
-            "queries_debt?"=>true}]}, {"id"=>2, "name"=>"Copaco", "url_name"=>"copaco", \
-            "logo_resource_id"=>"7cbf154d-478c-4ee6-8882-b0c6be73ee3e", \
-            "full_logo_url"=>"https://www.bancard.com.py/s4/public/billing_brands_logos/7cbf154d-478c-4ee6-8882-b0c6be73ee3e.normal.png", \
-            "products"=>[{"id"=>2, "name"=>"Pago de Factura", "description"=>"Pago de Factura", "group_id"=>1, \
-            "queries_debt?"=>true}, {"id"=>3, "name"=>"Recarga de Saldo", "description"=>"Recarga de Minutos", \
-            "group_id"=>2, "queries_debt?"=>false}, {"id"=>93, "name"=>"Pago de factura por cuenta", \
-            "description"=>"Pago de Factura por cuenta", "group_id"=>1, "queries_debt?"=>true}]}, \
-            {"id"=>3, "name"=>"Essap", "url_name"=>"essap", "logo_resource_id"=>"7c2a3d7b-d849-4c38-a44b-d0f597739a62",\
-            "full_logo_url"=>"https://www.bancard.com.py/s4/public/billing_brands_logos/7c2a3d7b-d849-4c38-a44b-d0f597739a62.normal.png", \
-            "products"=>[{"id"=>4, "name"=>"Pago de Factura", "description"=>"Pago de Factura", "group_id"=>1, "queries_debt?"=>true}]}]}
-      #brands = response['brands'].select { |br| br['name'].downcase.include? brand_name[:brand_name] }
-    response['brands'].each { |brand| @list_brands.push(Struct::BrandStruct.new(brand, false)) }
+    brands = response['brands'].select { |br| br['name'].downcase.include? brand_name[:brand_name].downcase }
+    brands.each { |brand| @list_brands.push(Struct::BrandStruct.new(brand, false)) }
   end
 
   def research_brand
@@ -115,5 +101,4 @@ class BrandsController < ApplicationController
   def get_selected_prd
     params[:list_prd]
   end
-
 end
